@@ -78,8 +78,20 @@ export default {
         <div class="form-group">
           <label>Car brand*</label>
           <Select
-            :options="['Select', 'python', 'rust', 'javascript']"
-            :default="'go'"
+            :options="[
+              'Select',
+              'Audi',
+              'Tesla',
+              'Maserati',
+              'Porsche',
+              'Lincoln',
+              'Lexus',
+              'Mustang',
+              'Honda',
+              'Kia',
+              'Mazda',
+            ]"
+            :default="'Select'"
             class="select"
           />
           <!-- <Select>
