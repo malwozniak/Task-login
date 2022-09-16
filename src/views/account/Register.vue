@@ -1,18 +1,8 @@
 <script setup>
 import { Form, Field, useField, useForm } from 'vee-validate';
 import * as Yup from 'yup';
-
 import { useAuthStore } from '@/stores';
 
-const products = [
-  'Audi',
-  'Maserati',
-  'Tesla',
-  'Porsche',
-  'Lincoln',
-  'Kia',
-  'Mazda',
-];
 //import { Select } from '@/components/Select.vue';
 
 import Input from '@/components/Input.vue';
@@ -26,13 +16,16 @@ const schema = Yup.object().shape({
   //   value: Yup.string().required('Required'),
   // }),
 });
-
-async function onSubmit(values) {
-  const authStore = useAuthStore();
-  const { username } = values;
-  // return error, username, carBrand, meta, onSubmit;
-  await authStore.login(username);
+function onSubmit(values) {
+  // display form values on success
+  alert('SUCCESS!! :-)\n\n' + JSON.stringify(values, null, 4));
 }
+// async function onSubmit(values) {
+//   const authStore = useAuthStore();
+//   const { username } = values;
+//   // return error, username, carBrand, meta, onSubmit;
+//   await authStore.login(username);
+// }
 
 const { errors, meta, handleSubmit } = useForm({
   validationSchema: schema,
@@ -58,11 +51,7 @@ export default {
   <div class="card m-3">
     <h4 class="card-header">Try component Input & Select</h4>
     <div class="card-body">
-      <Form
-        @submit="onSubmit"
-        :validation-schema="schema"
-        v-slot="{ errors, isSubmitting }"
-      >
+      <Form @submit="onSubmit" :validation-schema="schema" v-slot="{ errors }">
         <div class="form-group">
           <Input
             name="username"
@@ -70,6 +59,8 @@ export default {
             placeholder="Type your name"
             :label="{ value: 'Name*', for: 'username' }"
             class="form-input"
+            :classes="{ input: 'w-3/4 lg:w-1/3' }"
+            @blur="form.text.$validate()"
           />
 
           <div class="invalid-feedback">{{ errors.username }}</div>

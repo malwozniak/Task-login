@@ -1,18 +1,7 @@
 <script setup>
 import { Form, Field, useField, useForm } from 'vee-validate';
 import * as Yup from 'yup';
-
 import { useAuthStore } from '@/stores';
-
-const products = [
-  'Audi',
-  'Maserati',
-  'Tesla',
-  'Porsche',
-  'Lincoln',
-  'Kia',
-  'Mazda',
-];
 
 const schema = Yup.object().shape({
   username: Yup.string()
