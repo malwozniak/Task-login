@@ -1,0 +1,86 @@
+<script setup>
+import { Form, Field } from 'vee-validate';
+import * as Yup from 'yup';
+import { useAuthStore } from '@/stores';
+
+const schema = Yup.object().shape({
+  username: Yup.string()
+    .required('Name is required')
+    .min(3, 'Name must be at least 3 characters')
+    .max(12, 'Name must be a max 12 characters'),
+  password: Yup.string()
+    .required('Password is required')
+    .min(6, 'Password must be at least 6 characters'),
+  carBrand: Yup.string().required('car brand is required'),
+});
+
+async function onSubmit(values) {
+  const authStore = useAuthStore();
+  const { username, password } = values;
+  await authStore.login(username, password);
+}
+</script>
+
+<template>
+  <div class="card m-3">
+    <h4 class="card-header">Task</h4>
+    <div class="card-body">
+      <Form
+        @submit="onSubmit"
+        :validation-schema="schema"
+        v-slot="{ errors, isSubmitting }"
+      >
+        <div class="form-group">
+          <label>Name*</label>
+          <Field
+            name="username"
+            type="text"
+            class="form-input"
+            :class="{ 'is-invalid': errors.username }"
+          />
+          <div class="invalid-feedback">{{ errors.username }}</div>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <Field
+            name="password"
+            type="password"
+            class="form-input"
+            :class="{ 'is-invalid': errors.password }"
+          />
+          <div class="invalid-feedback">{{ errors.password }}</div>
+        </div>
+
+        <div class="form-group">
+          <label>Car brand*</label>
+          <select name="carBrand" id="greatest" required="">
+            <option value="A">Select something</option>
+            <option value="Audi">Audi</option>
+            <option value="Tesla">Tesla</option>
+            <option value="Maserati">Maserati</option>
+            <option value="Porsche">Porsche</option>
+            <option value="Lincoln">Lincoln</option>
+            <option value="Lexus">Lexus</option>
+            <option value="Mustang">Mustang</option>
+            <option value="Honda">Honda</option>
+            <option value="Kia">Kia</option>
+            <option value="Mazda">Mazda</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <button class="btn submit-btn" :disabled="isSubmitting">
+            <span
+              v-show="isSubmitting"
+              class="spinner-border spinner-border-sm mr-1"
+            ></span>
+            Submit
+          </button>
+          <router-link to="register" class="btn btn-link">Register</router-link>
+        </div>
+        <div class="form-group">
+          <span id="req">*required field</span>
+        </div>
+      </Form>
+    </div>
+  </div>
+</template>
