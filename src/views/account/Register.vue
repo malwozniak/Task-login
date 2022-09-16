@@ -29,9 +29,9 @@ const schema = Yup.object().shape({
 
 async function onSubmit(values) {
   const authStore = useAuthStore();
-  const { username, carBrand } = values;
+  const { username } = values;
   // return error, username, carBrand, meta, onSubmit;
-  await authStore.login(username, carBrand);
+  await authStore.login(username);
 }
 
 const { errors, meta, handleSubmit } = useForm({
