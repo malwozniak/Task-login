@@ -64,7 +64,13 @@ async function onSubmit(values) {
         </div>
         <div class="form-group col">
           <label>Car brand*</label>
-          <select type="" name="carBrand" id="greatest" required>
+          <select
+            name="carBrand"
+            v-model="carBrand"
+            id="carBrand"
+            required=""
+            placeholder="Select"
+          >
             <option value="A">Select something</option>
             <option value="Audi">Audi</option>
             <option value="Tesla">Tesla</option>
@@ -90,15 +96,5 @@ async function onSubmit(values) {
         <router-link to="/users" class="btn btn-link">Cancel</router-link>
       </div>
     </Form>
-  </template>
-  <template v-if="user?.loading">
-    <div class="text-center m-5">
-      <span class="spinner-border spinner-border-lg align-center"></span>
-    </div>
-  </template>
-  <template v-if="user?.error">
-    <div class="text-center m-5">
-      <div class="text-danger">Error loading user: {{ user.error }}</div>
-    </div>
   </template>
 </template>

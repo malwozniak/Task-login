@@ -1,7 +1,6 @@
 <script setup>
 import { Form, Field, useField, useForm } from 'vee-validate';
 import * as Yup from 'yup';
-
 import { useAuthStore } from '@/stores';
 
 const products = [
@@ -18,15 +17,15 @@ const schema = Yup.object().shape({
   username: Yup.string()
     .required('Name is required')
     .min(3, 'Name must be at least 3 characters')
-    .max(16, 'Name must be max 16 characters'),
-  //carBrand: Yup.string().required('Required').oneOf(products),
+    .max(16, 'Name must be a max 16 characters'),
+  // carBrand: Yup.string().required('Required').oneOf(products),
 });
 
 async function onSubmit(values) {
   const authStore = useAuthStore();
-  const { username, carBrand } = values;
-  // return error, username, carBrand, meta, onSubmit;
-  await authStore.login(username, carBrand);
+  const { username } = values;
+  return error, username, carBrand, meta, onSubmit;
+  await authStore.login(username);
 }
 
 const { errors, meta, handleSubmit } = useForm({
@@ -64,13 +63,10 @@ const body = { username: username.value, carBrand: carBrand.value };
 
         <div class="form-group">
           <label>Car brand*</label>
-          <select
-            name="carBrand"
-            v-model="carBrand"
-            id="carBrand"
-            required=""
-            placeholder="Select"
-          >
+          <select name="carBrand" v-model="carBrand" id="carBrand">
+            <option value="" placeholder="Select" >
+              Select
+            </option>
             <option value="Audi">Audi</option>
             <option value="Tesla">Tesla</option>
             <option value="Maserati">Maserati</option>
@@ -82,15 +78,12 @@ const body = { username: username.value, carBrand: carBrand.value };
             <option value="Kia">Kia</option>
             <option value="Mazda">Mazda</option>
           </select>
-          <div class="invalid-feedback">{{ errors.carBrand }}</div>
         </div>
         <div class="form-group">
           <button type="submit" :disabled="!(meta.valid && meta.dirty)">
             Submit
           </button>
-          <router-link to="register" class="btn btn-link"
-            >Try with created components - Input & Select</router-link
-          >
+          <router-link to="register" class="btn btn-link">Register</router-link>
         </div>
         <div class="form-group">
           <span id="req">*required field</span>

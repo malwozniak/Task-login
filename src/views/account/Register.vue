@@ -1,9 +1,21 @@
 <script setup>
 import { Form, Field, useField, useForm } from 'vee-validate';
 import * as Yup from 'yup';
-import { useUsersStore, useAlertStore } from '@/stores';
-import { router } from '@/router';
 
+import { useAuthStore } from '@/stores';
+
+const products = [
+  'Audi',
+  'Maserati',
+  'Tesla',
+  'Porsche',
+  'Lincoln',
+  'Kia',
+  'Mazda',
+];
+//import { Select } from '@/components/Select.vue';
+
+import Input from '@/components/Input.vue';
 const schema = Yup.object().shape({
   username: Yup.string()
     .required('Name is required')
@@ -16,16 +28,10 @@ const schema = Yup.object().shape({
 });
 
 async function onSubmit(values) {
-  const usersStore = useUsersStore();
-  const alertStore = useAlertStore();
-  try {
-    await usersStore.register(values);
-    await router.push('/account/login');
-    alertStore.success('Registration successful');
-    // return error, username, carBrand, meta, onSubmit;
-  } catch (error) {
-    alertStore.error(error);
-  }
+  const authStore = useAuthStore();
+  const { username, carBrand } = values;
+  // return error, username, carBrand, meta, onSubmit;
+  await authStore.login(username, carBrand);
 }
 
 const { errors, meta, handleSubmit } = useForm({
@@ -35,11 +41,22 @@ const { value: username } = useField('username');
 const { value: carBrand } = useField('carBrand');
 
 const body = { username: username.value, carBrand: carBrand.value };
+
+//const body = { username: username.value };
 </script>
 
+<script>
+import Select from '@/components/Select.vue';
+
+export default {
+  components: {
+    Select,
+  },
+};
+</script>
 <template>
   <div class="card m-3">
-    <h4 class="card-header">Register</h4>
+    <h4 class="card-header">Try component Input & Select</h4>
     <div class="card-body">
       <Form
         @submit="onSubmit"
@@ -47,19 +64,29 @@ const body = { username: username.value, carBrand: carBrand.value };
         v-slot="{ errors, isSubmitting }"
       >
         <div class="form-group">
-          <label>Name*</label>
-          <Field
+          <Input
             name="username"
+            v-model="username"
             placeholder="Type your name"
-            type="text"
+            :label="{ value: 'Name*', for: 'username' }"
             class="form-input"
-            :class="{ 'is-invalid': errors.username }"
           />
+
           <div class="invalid-feedback">{{ errors.username }}</div>
         </div>
 
         <div class="form-group">
           <label>Car brand*</label>
+          <Select
+            :options="['Select', 'python', 'rust', 'javascript']"
+            :default="'go'"
+            class="select"
+          />
+          <!-- <Select>
+            <Option disabled>Select</Option>
+            <Option>Audi</Option>
+          </Select> -->
+          <!-- 
           <select name="carBrand" v-model="carBrand" id="carBrand">
             <option disabled value="">Select</option>
             <option value="Audi">Audi</option>
@@ -72,11 +99,11 @@ const body = { username: username.value, carBrand: carBrand.value };
             <option value="Honda">Honda</option>
             <option value="Kia">Kia</option>
             <option value="Mazda">Mazda</option>
-          </select>
+          </select>-->
         </div>
         <div class="form-group">
           <button type="submit" :disabled="!(meta.valid && meta.dirty)">
-            Submit
+            Come back to first
           </button>
           <router-link to="login" class="btn btn-link">Cancel</router-link>
         </div>

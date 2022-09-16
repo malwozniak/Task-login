@@ -23,6 +23,8 @@
   outline: none;
 }
 .form-input.is-invalid,
+.was-validated .form-input:invalid,
+#carBand.is-invalid,
 .was-validated .form-input:invalid {
   border-color: #dc3545;
   padding-right: calc(1.5em + 0.75rem);
@@ -60,11 +62,13 @@ label {
 [type='submit']:not(:disabled):not(.disabled) {
   cursor: pointer;
   color: white;
+  outline: none;
   border: none;
   background-color: #2596be;
 }
-[type='submit']:focus {
-  border: none;
+[type='submit']:focus,
+button:focus {
+  outline: none;
 }
 .form-input::placeholder,
 select::placeholder {
@@ -80,6 +84,10 @@ button:disabled {
   border-radius: 0%;
   border: none;
 }
+[type='submit']:disabled,
+button:disabled {
+  outline: none;
+}
 
 /*Label select*/
 #carBrand {
@@ -87,7 +95,6 @@ button:disabled {
   width: 100%;
   height: calc(1.5em + 0.75rem + 2px);
   padding: 0.375rem 0.75rem;
-  border: 1px solid rgba(0, 0, 0, 0.125);
   font-weight: 400;
   line-height: 1.5;
   font-size: small;
